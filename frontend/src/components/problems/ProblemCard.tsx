@@ -1,0 +1,11 @@
+import { Bookmark, CheckCircle2, ExternalLink, Flame, PlayCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import type { Problem, ProgressStatus } from '../../types/api';
+import { DIFFICULTY_STYLES } from '../../lib/constants';
+import { cn } from '../../lib/utils';
+import { Badge } from '../ui/Badge';
+
+export function ProblemCard({ problem, status = 'todo', bookmarked = false }: { problem: Problem; status?: ProgressStatus; bookmarked?: boolean }) {
+  const statusLabel = status === 'solved' ? 'Solved' : status === 'in_progress' ? 'In progress' : status === 'revisit' ? 'Revisit' : 'Todo';
+  return <article className="group rounded-2xl border border-white/[.08] bg-white/[.03] p-4 transition hover:-translate-y-0.5 hover:border-violet/30 hover:bg-white/[.055]"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><div className="mb-2 flex flex-wrap items-center gap-2"><Badge className={DIFFICULTY_STYLES[problem.difficulty]}>{problem.difficulty}</Badge><Badge>{problem.estimated_minutes} min</Badge>{status === 'solved' && <Badge className="border-mint/20 bg-mint/10 text-mint"><CheckCircle2 size={11} className="mr-1" />{statusLabel}</Badge>}{status === 'in_progress' && <Badge className="border-cyan/20 bg-cyan/10 text-cyan"><PlayCircle size={11} className="mr-1" />{statusLabel}</Badge>}{status === 'revisit' && <Badge className="border-amber/20 bg-amber/10 text-amber"><Flame size={11} className="mr-1" />{statusLabel}</Badge>}</div><Link to={`/app/problem/${problem.id}`} className="block truncate font-display font-semibold text-white hover:text-cyan">{problem.title}</Link><div className="mt-2 flex flex-wrap gap-1.5">{problem.tags.slice(0, 3).map((tag) => <span key={tag} className="text-[10px] text-slate-500">#{tag}</span>)}</div></div><Bookmark size={17} className={cn('shrink-0 text-slate-600 transition group-hover:text-slate-400', bookmarked && 'fill-amber text-amber')} /></div><div className="mt-4 flex items-center justify-between border-t border-white/[.06] pt-3 text-xs text-slate-500"><span>{problem.topic_name ?? problem.topic_slug ?? 'Core patterns'}</span><a href={problem.external_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-slate-400 hover:text-cyan">Open source <ExternalLink size={12} /></a></div></article>;
+}
