@@ -1,0 +1,12 @@
+{
+  "mae_mean": 0.0527,
+  "mae_std": 0.0034,
+  "features": [
+    "self_rating",
+    "solved_ratio",
+    "avg_time_minutes",
+    "attempts",
+    "hints_used",
+    "recent_success"
+  ]
+}
